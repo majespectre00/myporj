@@ -164,6 +164,8 @@ int main() {
 
 	window.display();
 	int gamestate = 0;
+	int correct = 0;
+	int totalscore = 0;
 	cout << "gamestate is now " << gamestate << endl;
 
 
@@ -305,6 +307,7 @@ int main() {
 			window.draw(logomod1);
 			window.draw(bok);
 			window.display();
+			int count = 0;
 			long int starttime = time(0);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 2 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
@@ -318,31 +321,31 @@ int main() {
 				}
 				while (input != "exit")
 				{
-
-					string texture = fixword[rand() % fixword.size()];
+					int x = rand() % fixword.size();
+					string texture = fixword[x];
 					cout << "Type if !! -->" << texture << endl;
 					getline(cin, input);
 					if (texture == input)
 					{
 						cout << "correct" << endl;
+						correct++;
+						fixword.erase(fixword.begin()+x-1);
+						count++;
 					}
 					else
 					{
-						if(input!="exit")cout << "you fueck up" << endl;
+						if (input != "exit")
+						{
+							cout << "you fueck up" << endl;
+							count++;
+						}
 					}
 				}
 				long int elapse = time(0) - starttime;
-				cout << endl << elapse<<"s"<<endl;
+				cout << endl << elapse<<" s"<<endl;
 				cout << "end game"<<endl;
-				gamestate = 0;
-				cout << "gamestate is now " << gamestate << endl;
-				window.clear();
-				window.draw(background_menu);
-				window.draw(logo);
-				window.draw(bplay);
-				window.draw(binfo);
-				window.draw(bhigh);
-				window.display();
+				correct *= (count * 8 / elapse);
+				gamestate = 10;				
 			}
 		}
 		if (gamestate == 3)
@@ -352,7 +355,7 @@ int main() {
 			window.draw(logomod2);
 			window.draw(bok);
 			window.display();
-			
+			int count = 0;
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 3 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
 				string userinp = "";
@@ -365,7 +368,7 @@ int main() {
 				}
 				cout << answer.size() << endl;
 				window.clear();
-				while (true)
+				while (count != 12)
 				{
 					int x = rand() % answer.size();
 					cout << "rand : " << x << endl;
@@ -384,18 +387,10 @@ int main() {
 					if (userinp == answer[x])
 					{
 						cout << "Correct\n";
+						correct++;
 						window.clear();
 					}
 					else if (userinp == "exit") {
-						gamestate = 0;
-						cout << "gamestate is now " << gamestate << endl;
-						window.clear();
-						window.draw(background_menu);
-						window.draw(logo);
-						window.draw(bplay);
-						window.draw(binfo);
-						window.draw(bhigh);
-						window.display();
 						break;
 					}
 					else
@@ -403,9 +398,13 @@ int main() {
 						cout << "Incorrect\n";
 						window.clear();
 					}
+					count++;
 				}
+				gamestate = 10;
 			}
+				
 		}
+
 		if (gamestate == 4)
 		{
 			while (true)
@@ -427,6 +426,28 @@ int main() {
 					window.display();
 					break;
 				}
+			}
+		}
+		if (gamestate == 10)
+		{
+			window.clear();
+			window.draw(background_menu);
+			window.draw(buttbacktomenu);
+			window.display();
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && gamestate == 10 && buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+			{
+				cout << "your score = " << correct * 10 << endl;
+				totalscore += correct * 10;
+				correct = 0;
+				gamestate = 0;
+				cout << "gamestate is now " << gamestate << endl;
+				window.clear();
+				window.draw(background_menu);
+				window.draw(logo);
+				window.draw(bplay);
+				window.draw(binfo);
+				window.draw(bhigh);
+				window.display();
 			}
 		}
 	}
