@@ -168,6 +168,11 @@ int main() {
 	quizwar.setPosition(sf::Vector2f(160, 330));
 	quizwar.setScale(sf::Vector2f(1.2, 1.2));
 
+	sf::Sprite progmer;
+	sf::Texture prog_tex;
+	progmer.setPosition(sf::Vector2f(40, 200));
+	progmer.setScale(sf::Vector2f(2,1.6));
+
 
 	sf::Sprite logomod2;
 	logomod2.setTexture(mod2_texture);
@@ -178,6 +183,12 @@ int main() {
 	logomod1.setTexture(mod1_texture);
 	logomod1.setPosition(sf::Vector2f(170, 80));
 	logomod1.setScale(sf::Vector2f(2, 2));
+
+	sf::Sprite logomod3;
+	logomod3.setTexture(mod3_texture);
+	logomod3.setPosition(sf::Vector2f(170, 80));
+	logomod3.setPosition(sf::Vector2f(2, 2));
+
 
 	window.clear();
 
@@ -451,26 +462,43 @@ int main() {
 
 		if (gamestate == 4)
 		{
-			while (true)
+			window.clear();
+			window.draw(background_menu);
+			window.draw(logomod3);
+			window.draw(bok);
+			window.display();
+			int stage = 0;
+			
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 4 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
-				cout << "This is gamemode 3 the programmer\n";
-				string input = "";
-				cout << "pimaraigordai\n";
-				getline(cin, input);
-				cout << "your input: " << input << endl;
-				if (input == "e") {
-					gamestate = 0;
-					cout << "gamestate is now " << gamestate << endl;
-					window.clear();
-					window.draw(background_menu);
-					window.draw(logo);
-					window.draw(bplay);
-					window.draw(binfo);
+				cout << "Choose a stage from 1-5" << endl;
+				cin >> stage;
+				if (stage > 5) stage = 5;
+				string caller = "images/item" + to_string(stage)+".jpg";
+				while (true) {
+					prog_tex.loadFromFile(caller);
+					progmer.setTexture(prog_tex);
+					window.draw(progmer);
+					window.draw(buttbacktomenu);
 					window.display();
-					break;
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && gamestate == 4 && buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+					{
+						gamestate = 1;
+						window.clear();
+						window.draw(background_menu);
+						window.draw(mod1);
+						window.draw(mod2);
+						window.draw(mod3);
+						window.draw(buttbacktomenu);
+						window.display();
+						break;
+					}
 				}
+				
+				
 			}
 		}
+		
 		if (gamestate == 10)
 		{
 			window.clear();
