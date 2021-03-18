@@ -141,8 +141,17 @@ int main() {
 	sf::Sprite quizwar;
 	sf::Texture quiz;
 	quizwar.setPosition(sf::Vector2f(200, 200));
-	quizwar.setScale(sf::Vector2f(1.5, 1.5));
+	quizwar.setScale(sf::Vector2f(1.3, 1.3));
 
+	sf::Sprite logomod2;
+	logomod2.setTexture(mod2_texture);
+	logomod2.setPosition(sf::Vector2f(180, 10));
+	logomod2.setScale(sf::Vector2f(1.5, 1.5));
+
+	sf::Sprite logomod1;
+	logomod1.setTexture(mod1_texture);
+	logomod1.setPosition(sf::Vector2f(180, 10));
+	logomod1.setScale(sf::Vector2f(1.5, 1.5));
 
 	window.clear();
 
@@ -291,38 +300,63 @@ int main() {
 		}
 		if (gamestate == 2)
 		{
-			while (true)
+			window.clear();
+			window.draw(background_menu);
+			window.draw(logomod1);
+			window.draw(bok);
+			window.display();
+			long int starttime = time(0);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 2 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
-				cout << "This is gamemode 1 typing master\n";
-				string input = "";
-				cout << "pimaraigordai\n";
-				getline(cin, input);
-				cout << "your input: " << input << endl;
-				if (input == "e") {
-					gamestate = 0;
-					cout << "gamestate is now " << gamestate << endl;
-					window.clear();
-					window.draw(background_menu);
-					window.draw(logo);
-					window.draw(bplay);
-					window.draw(binfo);
-					window.draw(bhigh);
-					window.display();
-					break;
+				ifstream wordsource("wordmode.txt");
+				string input = "", textline;
+				vector<string> fixword;
+				while (getline(wordsource, textline))
+				{
+					wordsource >> ws;
+					fixword.push_back(textline);
 				}
+				while (input != "exit")
+				{
+
+					string texture = fixword[rand() % fixword.size()];
+					cout << "Type if !! -->" << texture << endl;
+					getline(cin, input);
+					if (texture == input)
+					{
+						cout << "correct" << endl;
+					}
+					else
+					{
+						if(input!="exit")cout << "you fueck up" << endl;
+					}
+				}
+				long int elapse = time(0) - starttime;
+				cout << endl << elapse<<"s"<<endl;
+				cout << "end game"<<endl;
+				gamestate = 0;
+				cout << "gamestate is now " << gamestate << endl;
+				window.clear();
+				window.draw(background_menu);
+				window.draw(logo);
+				window.draw(bplay);
+				window.draw(binfo);
+				window.draw(bhigh);
+				window.display();
 			}
 		}
 		if (gamestate == 3)
 		{
 			window.clear();
 			window.draw(background_menu);
+			window.draw(logomod2);
 			window.draw(bok);
 			window.display();
 			
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 3 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
 				string userinp = "";
-				ifstream ans("answer.txt");
+				ifstream ans("answer2.txt");
 				string textline;
 				vector<string> answer;
 				while (getline(ans, textline)) {
@@ -333,7 +367,7 @@ int main() {
 				window.clear();
 				while (true)
 				{
-					int x = rand() % 10;
+					int x = rand() % answer.size();
 					cout << "rand : " << x << endl;
 					int y = x + 1;
 					string imgcaller = to_string(y);
@@ -342,6 +376,7 @@ int main() {
 					quiz.loadFromFile(realimgcaller);
 					quizwar.setTexture(quiz);
 					window.draw(background_menu);
+					window.draw(logomod2);
 					window.draw(quizwar);
 
 					window.display();
