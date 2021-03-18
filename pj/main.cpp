@@ -131,9 +131,16 @@ int main() {
 	textinputbox.setPosition(sf::Vector2f(100, 100));
 	textinputbox.setScale(sf::Vector2f(1, 1));
 
+	sf::Sprite bok;
+	sf::Texture bok_texture;
+	bok_texture.loadFromFile("images/ok1.png");
+	bok.setTexture(bok_texture);
+	bok.setPosition(sf::Vector2f(0, 0));
+	bok.setScale(sf::Vector2f(10, 10));
+
 	sf::Sprite quizwar;
 	sf::Texture quiz;
-	quizwar.setPosition(sf::Vector2f(250, 300));
+	quizwar.setPosition(sf::Vector2f(200, 200));
 	quizwar.setScale(sf::Vector2f(1.5, 1.5));
 
 
@@ -308,50 +315,59 @@ int main() {
 		if (gamestate == 3)
 		{
 			window.clear();
-			string userinp = "";
-			ifstream ans("answer.txt");
-			string textline;
-			vector<string> answer;
-			while (getline(ans, textline)) {
-				answer.push_back(textline);
-				cout << "pushed\n";
-			}
-
-			while (true)
+			window.draw(background_menu);
+			window.draw(bok);
+			window.display();
+			
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 3 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
-				int x = rand() % 10;
-				cout << "rand : " << x << endl;
-				int y = x + 1;
-				string imgcaller = to_string(y);
-				imgcaller += ".jpg";
-				string realimgcaller = "images/" + imgcaller;
-				quiz.loadFromFile(realimgcaller);
-				quizwar.setTexture(quiz);
-				window.draw(background_menu);
-				window.draw(quizwar);
-
-				window.display();
-				getline(cin, userinp);
-				/*if (userinp == answer[x])
-				{
-					cout << "Correct";
-					window.clear();
-				}else*/ if (userinp == "exit") {
-					gamestate = 0;
-					cout << "gamestate is now " << gamestate << endl;
-					window.clear();
-					window.draw(background_menu);
-					window.draw(logo);
-					window.draw(bplay);
-					window.draw(binfo);
-					window.draw(bhigh);
-					window.display();
-					break;
+				string userinp = "";
+				ifstream ans("answer.txt");
+				string textline;
+				vector<string> answer;
+				while (getline(ans, textline)) {
+					answer.push_back(textline);
+					cout << "pushed\n";
 				}
-				else
+				cout << answer.size() << endl;
+				window.clear();
+				while (true)
 				{
-					cout << "Incorrect\n";
-					window.clear();
+					int x = rand() % 10;
+					cout << "rand : " << x << endl;
+					int y = x + 1;
+					string imgcaller = to_string(y);
+					imgcaller += ".jpg";
+					string realimgcaller = "images/" + imgcaller;
+					quiz.loadFromFile(realimgcaller);
+					quizwar.setTexture(quiz);
+					window.draw(background_menu);
+					window.draw(quizwar);
+
+					window.display();
+					getline(cin, userinp);
+					if (userinp == answer[x])
+					{
+						cout << "Correct\n";
+						window.clear();
+					}
+					else if (userinp == "exit") {
+						gamestate = 0;
+						cout << "gamestate is now " << gamestate << endl;
+						window.clear();
+						window.draw(background_menu);
+						window.draw(logo);
+						window.draw(bplay);
+						window.draw(binfo);
+						window.draw(bhigh);
+						window.display();
+						break;
+					}
+					else
+					{
+						cout << "Incorrect\n";
+						window.clear();
+					}
 				}
 			}
 		}
