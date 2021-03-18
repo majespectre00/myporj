@@ -39,6 +39,12 @@ sf::Vector2i Block_Until_Mouse_Click() {
 }
 
 int main() {
+	
+	sf::Music music;
+	if (!music.openFromFile("sound1.ogg"))
+	{
+	std:; cout << "error" << endl;
+	}
 	srand(time(0));
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "CODING BOOSTER");
 	sf::Event ev;
@@ -64,7 +70,7 @@ int main() {
 	bplay_texture.loadFromFile("images/bplay.png");
 	bplay_on_texture.loadFromFile("images/bplay_on.png");
 	bplay.setTexture(bplay_texture);
-	bplay.setPosition(sf::Vector2f(820, 500));
+	bplay.setPosition(sf::Vector2f(750, 400));
 	bplay.setScale(sf::Vector2f(1, 1));
 
 	sf::Sprite binfo;
@@ -72,7 +78,7 @@ int main() {
 
 	binfo_texture.loadFromFile("images/binfo.png");
 	binfo.setTexture(binfo_texture);
-	binfo.setPosition(sf::Vector2f(825, 650));
+	binfo.setPosition(sf::Vector2f(760, 600));
 	binfo.setScale(sf::Vector2f(1, 1));
 
 	sf::Sprite bhigh;
@@ -80,8 +86,25 @@ int main() {
 
 	bhigh_texture.loadFromFile("images/bhigh.png");
 	bhigh.setTexture(bhigh_texture);
-	bhigh.setPosition(sf::Vector2f(895, 850));
-	bhigh.setScale(sf::Vector2f(1, 1));
+	bhigh.setPosition(sf::Vector2f(250, 300));
+	bhigh.setScale(sf::Vector2f(1.7, 1.7));
+
+	sf::Sprite imgbox;
+	sf::Texture imgbox_texture;
+
+	imgbox_texture.loadFromFile("images/imgbox.png");
+	imgbox.setTexture(imgbox_texture);
+	imgbox.setPosition(sf::Vector2f(100, 100));
+	imgbox.setScale(sf::Vector2f(1, 1));
+
+
+	sf::Sprite infoo;
+	sf::Texture infoo_texture;
+
+	infoo_texture.loadFromFile("images/info.jpg");
+	infoo.setTexture(infoo_texture);
+	infoo.setPosition(sf::Vector2f(250, 100));
+	infoo.setScale(sf::Vector2f(1, 1));
 
 	sf::Sprite mod1;
 	sf::Texture mod1_texture;
@@ -89,31 +112,33 @@ int main() {
 	mod1_texture.loadFromFile("images/mod1.png");
 	mod1.setTexture(mod1_texture);
 	mod1.setPosition(sf::Vector2f(360, 200));
-	mod1.setScale(sf::Vector2f(1.5, 1.5));
+	mod1.setScale(sf::Vector2f(1.4, 1.4));
 
 	sf::Sprite mod2;
 	sf::Texture mod2_texture;
 
 	mod2_texture.loadFromFile("images/mod2.png");
 	mod2.setTexture(mod2_texture);
-	mod2.setPosition(sf::Vector2f(360, 400));
-	mod2.setScale(sf::Vector2f(1.5, 1.5));
+	mod2.setPosition(sf::Vector2f(360, 420));
+	mod2.setScale(sf::Vector2f(1.4, 1.4));
 
 	sf::Sprite mod3;
 	sf::Texture mod3_texture;
 
 	mod3_texture.loadFromFile("images/mod3.png");
 	mod3.setTexture(mod3_texture);
-	mod3.setPosition(sf::Vector2f(360, 600));
-	mod3.setScale(sf::Vector2f(1.5, 1.5));
+	mod3.setPosition(sf::Vector2f(360, 640));
+	mod3.setScale(sf::Vector2f(1.4, 1.4));
+
+
 
 	sf::Sprite buttbacktomenu;
 	sf::Texture buttback_texture;
 
 	buttback_texture.loadFromFile("images/buttback.png");
 	buttbacktomenu.setTexture(buttback_texture);
-	buttbacktomenu.setPosition(sf::Vector2f(1750, 950));
-	buttbacktomenu.setScale(sf::Vector2f(0.5, 0.5));
+	buttbacktomenu.setPosition(sf::Vector2f(1500, 820));
+	buttbacktomenu.setScale(sf::Vector2f(0.8, 0.7));
 
 	sf::Font font;
 	font.loadFromFile("font/Inconsolata-Regular.ttf");
@@ -140,8 +165,9 @@ int main() {
 
 	sf::Sprite quizwar;
 	sf::Texture quiz;
-	quizwar.setPosition(sf::Vector2f(200, 200));
-	quizwar.setScale(sf::Vector2f(1.3, 1.3));
+	quizwar.setPosition(sf::Vector2f(160, 330));
+	quizwar.setScale(sf::Vector2f(1.2, 1.2));
+
 
 	sf::Sprite logomod2;
 	logomod2.setTexture(mod2_texture);
@@ -150,8 +176,8 @@ int main() {
 
 	sf::Sprite logomod1;
 	logomod1.setTexture(mod1_texture);
-	logomod1.setPosition(sf::Vector2f(180, 10));
-	logomod1.setScale(sf::Vector2f(1.5, 1.5));
+	logomod1.setPosition(sf::Vector2f(170, 80));
+	logomod1.setScale(sf::Vector2f(2, 2));
 
 	window.clear();
 
@@ -159,20 +185,23 @@ int main() {
 	window.draw(logo);
 	window.draw(bplay);
 	window.draw(binfo);
-	window.draw(bhigh);
+	
 	//window.draw(textinputbox);
 
 	window.display();
 	int gamestate = 0;
 	int correct = 0;
 	int totalscore = 0;
-	cout << "gamestate is now " << gamestate << endl;
+	std::cout << "gamestate is now " << gamestate << endl;
 
-
+	music.play();
+	music.setLoop(true);
 	while (window.isOpen())
 	{
+	
 		while (window.pollEvent(ev))
 		{
+			
 			if (ev.type == sf::Event::Closed)
 			{
 				window.close();
@@ -181,18 +210,31 @@ int main() {
 			{
 				if (ev.mouseButton.button == sf::Mouse::Left)
 				{
+			
 					if (gamestate == 0)
 					{
 						if (bplay.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 						{
 
 							gamestate = 1;
-							cout << "gamestate is now " << gamestate << endl;
+							std::cout << "gamestate is now " << gamestate << endl;
 							window.clear();
 							window.draw(background_menu);
 							window.draw(mod1);
 							window.draw(mod2);
 							window.draw(mod3);
+							window.draw(buttbacktomenu);
+							window.display();
+						}
+
+						if (binfo.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+						{
+
+							gamestate = 1;
+							cout << "gamestate is now " << gamestate << endl;
+							window.clear();
+							window.draw(background_menu);
+							window.draw(infoo);
 							window.draw(buttbacktomenu);
 							window.display();
 						}
@@ -258,7 +300,7 @@ int main() {
 
 						window.clear();
 						gamestate = 2;
-						cout << "gamestate is now " << gamestate << endl;
+						std::cout << "gamestate is now " << gamestate << endl;
 						window.draw(background_menu);
 						window.display();
 
@@ -268,7 +310,7 @@ int main() {
 
 						window.clear();
 						gamestate = 3;
-						cout << "gamestate is now " << gamestate << endl;
+						std::cout << "gamestate is now " << gamestate << endl;
 						window.draw(background_menu);
 						window.display();
 
@@ -293,7 +335,6 @@ int main() {
 						window.draw(logo);
 						window.draw(bplay);
 						window.draw(binfo);
-						window.draw(bhigh);
 						window.display();
 
 					}
@@ -305,6 +346,7 @@ int main() {
 			window.clear();
 			window.draw(background_menu);
 			window.draw(logomod1);
+			window.draw(buttbacktomenu);
 			window.draw(bok);
 			window.display();
 			int count = 0;
@@ -380,6 +422,7 @@ int main() {
 					quizwar.setTexture(quiz);
 					window.draw(background_menu);
 					window.draw(logomod2);
+					window.draw(imgbox);
 					window.draw(quizwar);
 
 					window.display();
@@ -422,7 +465,6 @@ int main() {
 					window.draw(logo);
 					window.draw(bplay);
 					window.draw(binfo);
-					window.draw(bhigh);
 					window.display();
 					break;
 				}
@@ -446,7 +488,7 @@ int main() {
 				window.draw(logo);
 				window.draw(bplay);
 				window.draw(binfo);
-				window.draw(bhigh);
+
 				window.display();
 			}
 		}
