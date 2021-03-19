@@ -46,6 +46,7 @@ int main() {
 	{
 		std::cout << "error" << endl;
 	}
+	//sf::SoundSource::setVolume((float)20);
 	srand(time(0));
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "CODING BOOSTER");
 	sf::Event ev;
@@ -95,7 +96,7 @@ int main() {
 
 	imgbox_texture.loadFromFile("images/imgbox.png");
 	imgbox.setTexture(imgbox_texture);
-	imgbox.setPosition(sf::Vector2f(100, 100));
+	imgbox.setPosition(sf::Vector2f(20, -50));
 	imgbox.setScale(sf::Vector2f(1, 1));
 
 
@@ -144,6 +145,39 @@ int main() {
 	sf::Font font;
 	font.loadFromFile("font/Inconsolata-Regular.ttf");
 
+	sf::Text score;
+	score.setFont(font);
+	score.setCharacterSize(100);
+	score.setFillColor(sf::Color::Black);
+	score.setPosition(100, 350);
+
+	sf::Text cccode;
+	cccode.setFont(font);
+	cccode.setCharacterSize(60);
+	cccode.setFillColor(sf::Color::Black);
+	cccode.setPosition(170, 370);
+
+	sf::Text cccode1;
+	cccode1.setFont(font);
+	cccode1.setCharacterSize(80);
+	cccode1.setFillColor(sf::Color::Magenta);
+	cccode1.setPosition(200, 200);
+
+	sf::Text prev;
+	prev.setFont(font);
+	prev.setCharacterSize(50);
+	prev.setFillColor(sf::Color::Black);
+	prev.setPosition(200, 600);
+	prev.setString("Previous item");
+
+	sf::Text prevbool;
+	prevbool.setFont(font);
+	prevbool.setCharacterSize(50);
+	prevbool.setFillColor(sf::Color::Black);
+	prevbool.setPosition(200, 680);
+	prevbool.setString("");
+	
+
 
 	Textbox text1(20, true);
 	text1.setPosition({ 100, 100 });
@@ -166,24 +200,24 @@ int main() {
 
 	sf::Sprite quizwar;
 	sf::Texture quiz;
-	quizwar.setPosition(sf::Vector2f(160, 330));
+	quizwar.setPosition(sf::Vector2f(80, 180));
 	quizwar.setScale(sf::Vector2f(1.2, 1.2));
 
 	sf::Sprite progmer;
 	sf::Texture prog_tex;
 	progmer.setPosition(sf::Vector2f(40, 200));
-	progmer.setScale(sf::Vector2f(2,1.6));
+	progmer.setScale(sf::Vector2f(1.5,1));
 
 
 	sf::Sprite logomod2;
 	logomod2.setTexture(mod2_texture);
-	logomod2.setPosition(sf::Vector2f(180, 10));
-	logomod2.setScale(sf::Vector2f(1.5, 1.5));
+	logomod2.setPosition(sf::Vector2f(0, 5));
+	logomod2.setScale(sf::Vector2f(1.3, 1));
 
 	sf::Sprite logomod1;
 	logomod1.setTexture(mod1_texture);
-	logomod1.setPosition(sf::Vector2f(170, 80));
-	logomod1.setScale(sf::Vector2f(2, 2));
+	logomod1.setPosition(sf::Vector2f(0, 5));
+	logomod1.setScale(sf::Vector2f(1.3, 1));
 
 	sf::Sprite logomod3;
 	logomod3.setTexture(mod3_texture);
@@ -230,7 +264,6 @@ int main() {
 						{
 
 							gamestate = 1;
-							std::cout << "gamestate is now " << gamestate << endl;
 							window.clear();
 							window.draw(background_menu);
 							window.draw(mod1);
@@ -244,7 +277,6 @@ int main() {
 						{
 
 							gamestate = 1;
-							cout << "gamestate is now " << gamestate << endl;
 							window.clear();
 							window.draw(background_menu);
 							window.draw(infoo);
@@ -313,7 +345,7 @@ int main() {
 
 						window.clear();
 						gamestate = 2;
-						std::cout << "gamestate is now " << gamestate << endl;
+						
 						window.draw(background_menu);
 						window.display();
 
@@ -323,7 +355,7 @@ int main() {
 
 						window.clear();
 						gamestate = 3;
-						std::cout << "gamestate is now " << gamestate << endl;
+						
 						window.draw(background_menu);
 						window.display();
 
@@ -333,7 +365,6 @@ int main() {
 
 						window.clear();
 						gamestate = 4;
-						cout << "gamestate is now " << gamestate << endl;
 						window.draw(background_menu);
 						window.display();
 
@@ -342,7 +373,6 @@ int main() {
 					{
 
 						gamestate = 0;
-						cout << "gamestate is now " << gamestate << endl;
 						window.clear();
 						window.draw(background_menu);
 						window.draw(logo);
@@ -359,8 +389,9 @@ int main() {
 			window.clear();
 			window.draw(background_menu);
 			window.draw(logomod1);
-			window.draw(buttbacktomenu);
 			window.draw(bok);
+			prev.setPosition(200, 600);
+			prevbool.setPosition(200, 680);
 			window.display();
 			int count = 0;
 			long int starttime = time(0);
@@ -376,29 +407,48 @@ int main() {
 				}
 				while (input != "exit")
 				{
+					window.draw(background_menu);
+					window.draw(logomod1);
 					int x = rand() % fixword.size();
 					string texture = fixword[x];
-					cout << "Type if !! -->" << texture << endl;
+					string fixi = "Type!";
+					cccode.setString(texture);
+					cccode1.setString(fixi);
+					window.draw(cccode);
+					window.draw(cccode1);
+					if (count > 0) {
+						window.draw(prev);
+						window.draw(prevbool);
+					}
+					window.display();
+					cout << "Type it !! -->" << texture << endl;
 					getline(cin, input);
 					if (texture == input)
 					{
-						cout << "correct" << endl;
 						correct++;
 						fixword.erase(fixword.begin()+x-1);
 						count++;
+						prevbool.setFillColor(sf::Color::Green);
+						prevbool.setString("CORRECT");
+						window.clear();
 					}
 					else
 					{
 						if (input != "exit")
 						{
-							cout << "you fueck up" << endl;
+							
 							count++;
+							prevbool.setFillColor(sf::Color::Red);
+							prevbool.setString("INCORRECT");
+
+							window.clear();
 						}
 					}
 				}
 				long int elapse = time(0) - starttime;
 				cout << endl << elapse<<" s"<<endl;
 				cout << "end game"<<endl;
+				system("cls");
 				correct *= (count * 8 / elapse);
 				gamestate = 10;				
 			}
@@ -409,6 +459,8 @@ int main() {
 			window.draw(background_menu);
 			window.draw(logomod2);
 			window.draw(bok);
+			prev.setPosition(100, 720);
+			prevbool.setPosition(100, 800);
 			window.display();
 			int count = 0;
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 3 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
@@ -419,14 +471,11 @@ int main() {
 				vector<string> answer;
 				while (getline(ans, textline)) {
 					answer.push_back(textline);
-					cout << "pushed\n";
 				}
-				cout << answer.size() << endl;
 				window.clear();
 				while (count != 12)
 				{
 					int x = rand() % answer.size();
-					cout << "rand : " << x << endl;
 					int y = x + 1;
 					string imgcaller = to_string(y);
 					imgcaller += ".jpg";
@@ -437,6 +486,10 @@ int main() {
 					window.draw(logomod2);
 					window.draw(imgbox);
 					window.draw(quizwar);
+					if (count > 0) {
+						window.draw(prev);
+						window.draw(prevbool);
+					}
 
 					window.display();
 					getline(cin, userinp);
@@ -444,6 +497,8 @@ int main() {
 					{
 						cout << "Correct\n";
 						correct++;
+						prevbool.setFillColor(sf::Color::Green);
+						prevbool.setString("CORRECT");
 						window.clear();
 					}
 					else if (userinp == "exit") {
@@ -452,11 +507,14 @@ int main() {
 					else
 					{
 						cout << "Incorrect\n";
+						prevbool.setFillColor(sf::Color::Red);
+						prevbool.setString("INCORRECT");
 						window.clear();
 					}
 					count++;
 				}
 				gamestate = 10;
+				system("cls");
 			}
 				
 		}
@@ -546,19 +604,24 @@ int main() {
 			window.clear();
 			window.draw(background_menu);
 			window.draw(buttbacktomenu);
+			window.draw(score);
+			string ggwp = "Your score: " + to_string(correct * 10);
+			score.setString(ggwp);
 			window.display();
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && gamestate == 10 && buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
+				
 				cout << "your score = " << correct * 10 << endl;
 				totalscore += correct * 10;
 				correct = 0;
 				gamestate = 0;
-				cout << "gamestate is now " << gamestate << endl;
+				
 				window.clear();
 				window.draw(background_menu);
 				window.draw(logo);
 				window.draw(bplay);
 				window.draw(binfo);
+				
 
 				window.display();
 			}
@@ -596,190 +659,5 @@ int main() {
 
 
 
-/*
-					if (buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
 
-						window.draw(background_menu);
-						window.draw(logo);
-						window.draw(bplay);
-						window.draw(binfo);
-						window.draw(bhigh);
-
-						window.display();
-					}
-					if (mod1.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
-						gamestate = 1;
-						window.draw(background_menu);
-						window.display();
-					}
-					if (mod2.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
-						gamestate = 2;
-						window.draw(background_menu);
-						window.display();
-					}
-					if (mod3.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
-						gamestate = 3;
-						window.draw(background_menu);
-						window.display();
-					}
-					while (window.pollEvent(ev) && gamestate == 4)
-		{
-			switch (ev.type)
-			{
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::MouseButtonPressed:
-				if (ev.mouseButton.button == sf::Mouse::Left)
-				{
-
-					if (mod1.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
-						gamestate = 1;
-						window.draw(background_menu);
-						window.display();
-					}
-					if (mod2.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
-						gamestate = 2;
-						window.draw(background_menu);
-						window.display();
-					}
-					if (mod3.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.clear();
-						gamestate = 3;
-						window.draw(background_menu);
-						window.display();
-					}
-					if (buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						gamestate = 0;
-						window.clear();
-
-						window.draw(background_menu);
-						window.draw(logo);
-						window.draw(bplay);
-						window.draw(binfo);
-						window.draw(bhigh);
-
-						window.display();
-					}
-					cout << "it's break";
-					break;
-				}
-			}
-		}
-		while (window.pollEvent(ev) && gamestate == 0)
-		{
-			switch (ev.type)
-			{
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::TextEntered:
-					if (textinputbox.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						window.draw(background_menu);
-						window.draw(logo);
-						window.draw(bplay);
-						window.draw(binfo);
-						window.draw(bhigh);
-						window.draw(textinputbox);
-						text1.typedOn(ev);
-						text1.drawTo(window);
-						window.display();
-					}
-				break;
-
-			case sf::Event::MouseButtonPressed:
-				if (ev.mouseButton.button == sf::Mouse::Left)
-				{
-					if (bplay.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-					{
-						gamestate = 4;
-						window.clear();
-
-						window.draw(background_menu);
-						window.draw(mod1);
-						window.draw(mod2);
-						window.draw(mod3);
-						window.draw(buttbacktomenu);
-
-						window.display();
-					}
-					break;
-				}
-
-			}
-
-		}
-		/*
-		while (gamestate == 1) {
-			cout << "This is gamemode 1 typing master\n";
-			string input = "";
-			cout << "pimaraigordai\n";
-			getline(cin, input);
-			cout << "your input: " << input << endl;
-			if (input == "e") {
-				gamestate = 0;
-				window.clear();
-				window.draw(background_menu);
-				window.draw(logo);
-				window.draw(bplay);
-				window.draw(binfo);
-				window.draw(bhigh);
-				window.display();
-				break;
-			}
-		}
-		while (gamestate == 2) {
-			cout << "This is gamemode 2 quiz warrior\n";
-			string input = "";
-			cout << "pimaraigordai\n";
-			getline(cin, input);
-			cout << "your input: " << input << endl;
-			if (input == "e") {
-				gamestate = 0;
-				window.clear();
-				window.draw(background_menu);
-				window.draw(logo);
-				window.draw(bplay);
-				window.draw(binfo);
-				window.draw(bhigh);
-				window.display();
-				break;
-			}
-		}
-		while (gamestate == 3) {
-			cout << "This is gamemode 3 the programmer\n";
-			string input = "";
-			cout << "pimaraigordai\n";
-			getline(cin, input);
-			cout << "your input: " << input << endl;
-			if (input == "e") {
-				gamestate = 0;
-				window.clear();
-				window.draw(background_menu);
-				window.draw(logo);
-				window.draw(bplay);
-				window.draw(binfo);
-				window.draw(bhigh);
-				window.display();
-				break;
-			}
-
-		}
-
-	}
-					*/
+					
