@@ -194,7 +194,7 @@ int main() {
 	instruct2.setFont(font);
 	instruct2.setCharacterSize(50);
 	instruct2.setFillColor(sf::Color::Black);
-	instruct2.setPosition(170, 200);
+	instruct2.setPosition(70, 200);
 	instruct2.setString("Input correct choice or output");
 
 	sf::Text instruct3;
