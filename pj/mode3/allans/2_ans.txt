@@ -1,0 +1,3 @@
+Distance: 10
+Speed: 5
+Time: 2 

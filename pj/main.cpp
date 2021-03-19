@@ -1,5 +1,6 @@
-#include<iostream>
-
+﻿#include<iostream>
+#include"compareresult.cpp"
+#include"userInput.cpp"
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
 #include<SFML/Audio.hpp>
@@ -15,7 +16,7 @@
 
 using namespace std;
 
-void setmenu();
+//void setmenu();
 sf::Vector2i Block_Until_Mouse_Click() {
 
 	static bool pressed = false;
@@ -467,19 +468,60 @@ int main() {
 			window.draw(bok);
 			window.display();
 			int stage = 0;
-			
+			bool ingame = false;
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && gamestate == 4 && bok.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 			{
+				system("cls");
 				cout << "Choose a stage from 1-5" << endl;
 				cin >> stage;
+				ingame = true;
+				system("cls");
 				if (stage > 5) stage = 5;
 				string caller = "images/item" + to_string(stage)+".jpg";
-				while (true) {
+				while (true&&ingame) {
 					prog_tex.loadFromFile(caller);
 					progmer.setTexture(prog_tex);
 					window.draw(progmer);
 					window.draw(buttbacktomenu);
 					window.display();
+					userInput inputuser;
+					compareresult resultcompare;
+					string level = to_string(stage)+"_";
+					if (stage == 5)
+					{
+						cout << "int data[10]={40,35,50,60,75,95,69,88,70,242};\n";
+					}
+					inputuser.firstinclude(level); //ส่วนนี้คือส่วนแรก จะอยู่กับปุ่มเลือกความยาก
+					inputuser.userinclude();
+					inputuser.lastinclude();
+					
+					if (stage == 1)
+					{
+						system("g++ input.cpp -o myinput");
+						system("myinput.exe 5 4");
+						
+					}
+					else if (stage == 2)
+					{
+						system("g++ input.cpp -o myinput");
+						system("myinput.exe 10 5");
+					}
+					else if (stage==3)
+					{
+						system("g++ input.cpp -o myinput");
+						system("myinput.exe 5");
+					}
+					else if (stage == 4)
+					{
+						system("g++ input.cpp -o myinput");
+						system("myinput.exe 900");
+					}
+					else
+					{
+						system("g++ input.cpp -o myinput");
+						system("myinput.exe");
+					}
+					resultcompare.mainCompare(level, level);
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && gamestate == 4 && buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 					{
 						gamestate = 1;
@@ -523,6 +565,36 @@ int main() {
 	}
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 					if (buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 					{
