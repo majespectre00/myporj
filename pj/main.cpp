@@ -48,7 +48,7 @@ int main() {
 	}
 	//sf::SoundSource::setVolume((float)20);
 	srand(time(0));
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "CODING BOOSTER");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "CODING BOOSTER",sf::Style::Fullscreen);
 	sf::Event ev;
 
 	sf::Sprite background_menu;
@@ -56,6 +56,12 @@ int main() {
 
 	background_menu_texture.loadFromFile("images/background.png");
 	background_menu.setTexture(background_menu_texture);
+
+	sf::Sprite gameover;
+	sf::Texture gameover_tex;
+	gameover_tex.loadFromFile("images/game-over.png");
+	gameover.setTexture(gameover_tex);
+	gameover.setScale(sf::Vector2f(1.22, 1.3));
 
 	sf::Sprite logo;
 	sf::Texture logo_texture;
@@ -147,9 +153,9 @@ int main() {
 
 	sf::Text score;
 	score.setFont(font);
-	score.setCharacterSize(100);
-	score.setFillColor(sf::Color::Black);
-	score.setPosition(100, 350);
+	score.setCharacterSize(150);
+	score.setFillColor(sf::Color::White);
+	score.setPosition(180, 440);
 
 	sf::Text cccode;
 	cccode.setFont(font);
@@ -177,7 +183,41 @@ int main() {
 	prevbool.setPosition(200, 680);
 	prevbool.setString("");
 	
+	sf::Text instruct1;
+	instruct1.setFont(font);
+	instruct1.setCharacterSize(50);
+	instruct1.setFillColor(sf::Color::Black);
+	instruct1.setPosition(200, 200);
+	instruct1.setString("Type what you see.");
 
+	sf::Text instruct2;
+	instruct2.setFont(font);
+	instruct2.setCharacterSize(50);
+	instruct2.setFillColor(sf::Color::Black);
+	instruct2.setPosition(170, 200);
+	instruct2.setString("Input correct choice or output");
+
+	sf::Text instruct3;
+	instruct3.setFont(font);
+	instruct3.setCharacterSize(50);
+	instruct3.setFillColor(sf::Color::Black);
+	instruct3.setPosition(170, 200);
+	instruct3.setString("write code in int main(){}");
+
+	sf::Text instruct32;
+	instruct32.setFont(font);
+	instruct32.setCharacterSize(50);
+	instruct32.setFillColor(sf::Color::Black);
+	instruct32.setPosition(180, 440);
+	instruct32.setString("input stage in cmd");
+
+
+	sf::Text Rightcl;
+	Rightcl.setFont(font);
+	Rightcl.setCharacterSize(50);
+	Rightcl.setFillColor(sf::Color::Black);
+	Rightcl.setPosition(200, 320);
+	Rightcl.setString("Right click to continue.");
 
 	Textbox text1(20, true);
 	text1.setPosition({ 100, 100 });
@@ -206,7 +246,7 @@ int main() {
 	sf::Sprite progmer;
 	sf::Texture prog_tex;
 	progmer.setPosition(sf::Vector2f(40, 200));
-	progmer.setScale(sf::Vector2f(1.5,1));
+	progmer.setScale(sf::Vector2f(1.5,2.8));
 
 
 	sf::Sprite logomod2;
@@ -389,6 +429,9 @@ int main() {
 			window.clear();
 			window.draw(background_menu);
 			window.draw(logomod1);
+			window.draw(imgbox);
+			window.draw(instruct1);
+			window.draw(Rightcl);
 			window.draw(bok);
 			prev.setPosition(200, 600);
 			prevbool.setPosition(200, 680);
@@ -458,6 +501,9 @@ int main() {
 			window.clear();
 			window.draw(background_menu);
 			window.draw(logomod2);
+			window.draw(imgbox);
+			window.draw(instruct2);
+			window.draw(Rightcl);
 			window.draw(bok);
 			prev.setPosition(100, 720);
 			prevbool.setPosition(100, 800);
@@ -525,6 +571,9 @@ int main() {
 			window.draw(background_menu);
 			window.draw(logomod3);
 			window.draw(bok);
+			window.draw(imgbox);
+			window.draw(instruct3);
+			window.draw(Rightcl);
 			window.display();
 			int stage = 0;
 			bool ingame = false;
@@ -532,12 +581,17 @@ int main() {
 			{
 				system("cls");
 				cout << "Choose a stage from 1-5" << endl;
+				window.draw(instruct32);
+				window.display();
 				cin >> stage;
 				ingame = true;
 				system("cls");
 				if (stage > 5) stage = 5;
 				string caller = "images/item" + to_string(stage)+".jpg";
 				while (true&&ingame) {
+					window.clear();
+					window.draw(background_menu);
+					window.draw(logomod3);
 					prog_tex.loadFromFile(caller);
 					progmer.setTexture(prog_tex);
 					window.draw(progmer);
@@ -602,10 +656,10 @@ int main() {
 		if (gamestate == 10)
 		{
 			window.clear();
-			window.draw(background_menu);
+			window.draw(gameover);
 			window.draw(buttbacktomenu);
 			window.draw(score);
-			string ggwp = "Your score: " + to_string(correct * 10);
+			string ggwp = "            " + to_string(correct * 10);
 			score.setString(ggwp);
 			window.display();
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && gamestate == 10 && buttbacktomenu.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
