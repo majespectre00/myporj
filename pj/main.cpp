@@ -44,7 +44,7 @@ int main() {
 	sf::Music music;
 	if (!music.openFromFile("sound1.ogg"))
 	{
-	std:; cout << "error" << endl;
+		std::cout << "error" << endl;
 	}
 	srand(time(0));
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "CODING BOOSTER");
@@ -208,6 +208,7 @@ int main() {
 
 	music.play();
 	music.setLoop(true);
+	music.setVolume(5);
 	while (window.isOpen())
 	{
 	
